@@ -11,13 +11,12 @@ public class Book {
   int id;
   String title;
   String description;
-  String fileName;
-  Path uploadDir;
+  String fileUri;
 
-  public Book(String title, String description, String fileName) {
+  public Book(String title, String description, String fileUri) {
     this.title = title;
     this.description = description;
-    this.fileName = fileName;
+    this.fileUri = fileUri;
   }
 
   public int getId() {
@@ -44,19 +43,12 @@ public class Book {
     this.description = description;
   }
 
-  public String getFileName() {
-    return fileName;
+  public String getFileUri() {
+    return fileUri;
   }
 
-  public void setFileName(String fileName) {
-    this.fileName = fileName;
+  public void setFileUri(String fileUri) {
+    this.fileUri = fileUri;
   }
 
-  public Path getUploadDir() {
-    return uploadDir;
-  }
-
-  public void setUploadDir(Path uploadDir) {
-    this.uploadDir = uploadDir;
-  }
 }

@@ -20,10 +20,10 @@ public class BookServiceImpl implements BookService {
   private static final AtomicInteger BOOKS_ID_HOLDER = new AtomicInteger();
 
   @Override
-  public void create(Book book) {
+  public Book create(Book book) {
     final int bookId = BOOKS_ID_HOLDER.incrementAndGet();
     book.setId(bookId);
-    BOOKS_REPOSITORY_MAP.put(bookId, book);
+    return BOOKS_REPOSITORY_MAP.put(bookId, book);
   }
 
   @Override
@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
     List<BookTo> result = new ArrayList<>();
     for (Book value : BOOKS_REPOSITORY_MAP.values()) {
       result.add(new BookTo(value.getTitle(), value.getDescription(),
-          value.getUploadDir() + "/" + value.getFileName()));
+          value.getFileUri()));
     }
     return result;
   }
