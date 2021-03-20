@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -22,10 +23,11 @@ public class FileStorageService {
   private final Path fileStorageLocation;
 
   @Autowired
-  public FileStorageService(FileStorageProperties fileStorageProperties){
-    this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
+  public FileStorageService(FileStorageProperties fileStorageProperties) {
+    this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath()
+        .normalize();
 
-    try{
+    try {
       Files.createDirectories(this.fileStorageLocation);
     } catch (Exception ex) {
       throw new FileStorageException("Что то не так с директорией");
@@ -33,10 +35,10 @@ public class FileStorageService {
   }
 
   public String storeFile(MultipartFile file) {
-    String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
     try {
-      if(fileName.contains("..")) {
+      if (fileName.contains("..")) {
         throw new FileStorageException("Ошибка в пути " + fileName);
       }
 
@@ -45,7 +47,8 @@ public class FileStorageService {
 
       return fileName;
     } catch (IOException ex) {
-      throw new FileStorageException("Невозможно сохранить " + fileName + ". Повторяем попытку!", ex);
+      throw new FileStorageException("Невозможно сохранить " + fileName + ". Повторяем попытку!",
+          ex);
     }
   }
 

@@ -5,6 +5,7 @@ package com.ponser2000.testjobbooks.exception;
  * @project test-job-books/com.ponser2000.testjobbooks.exception
  */
 public class FileStorageException extends RuntimeException {
+
   public FileStorageException(String message) {
     super(message);
   }
