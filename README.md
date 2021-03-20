@@ -1,11 +1,11 @@
 # test-job-books
 
-Для получения jar выполняем
+Для получения jar выполняем 
 cd <Dorectory_of_your_project>
 mvn package
 
-Упаковываем приложение в docker контейнер
-cd <Dorectory_of_your_project>
+Упаковываем приложение в docker контейнер <br>
+cd <Dorectory_of_your_project><br>
 docker build -t test-job-books-simple:0.0.1 .
 
 Запускаем полученный образ
