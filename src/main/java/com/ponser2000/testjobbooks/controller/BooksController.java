@@ -6,7 +6,6 @@ import com.ponser2000.testjobbooks.model.ResultOperation;
 import com.ponser2000.testjobbooks.service.BookService;
 import com.ponser2000.testjobbooks.service.FileStorageService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,29 +22,38 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class BooksController {
 
 
-  @Autowired
-  private FileStorageService fileStorageService;
+  private final FileStorageService fileStorageService;
 
-  @Autowired
-  private BookService bookService;
+  private final BookService bookService;
+
+  public BooksController(FileStorageService fileStorageService,
+      BookService bookService) {
+    this.fileStorageService = fileStorageService;
+    this.bookService = bookService;
+  }
 
   @PostMapping("/books/add")
-  public ResponseEntity<ResultOperation> addNewBook(@RequestParam("title") String title ,@RequestParam("description") String description ,@RequestParam("cover") MultipartFile cover) {
+  public ResponseEntity<ResultOperation> addNewBook(@RequestParam("title") String title,
+      @RequestParam("description") String description, @RequestParam("cover") MultipartFile cover) {
 
     ResultOperation result = new ResultOperation();
-    String fileName = fileStorageService.storeFile(cover);
-    String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/books/covers/").path(fileName).toUriString();
+    String fileDownloadUri;
+    if (cover != null) {
+      String fileName = fileStorageService.storeFile(cover);
+      fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+          .path("/books/covers/").path(fileName).toUriString();
+    } else {
+      result.setSuccess(false);
+      return ResponseEntity.ok().body(result);
+    }
 
-
-    Book resultBook = bookService.create(new Book(title, description, fileDownloadUri));
-
-    if ( resultBook != null && fileName != null) {
+    if (title != null && description != null) {
+      bookService.create(new Book(title, description, fileDownloadUri));
       result.setSuccess(true);
     } else {
       result.setSuccess(false);
     }
     return ResponseEntity.ok().body(result);
-
   }
 
   @GetMapping("/books")

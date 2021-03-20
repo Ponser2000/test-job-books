@@ -1,7 +1,5 @@
 package com.ponser2000.testjobbooks.model;
 
-import java.nio.file.Path;
-
 /**
  * @author Sergey Ponomarev on 12.03.2021
  * @project test-job-books/com.ponser2000.testjobbooks.model

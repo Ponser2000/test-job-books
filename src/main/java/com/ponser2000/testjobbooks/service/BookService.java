@@ -12,6 +12,6 @@ public interface BookService {
 
   List<BookTo> readAll();
 
-  Book create(Book book);
+  void create(Book book);
 
 }

@@ -20,10 +20,10 @@ public class BookServiceImpl implements BookService {
   private static final AtomicInteger BOOKS_ID_HOLDER = new AtomicInteger();
 
   @Override
-  public Book create(Book book) {
+  public void create(Book book) {
     final int bookId = BOOKS_ID_HOLDER.incrementAndGet();
     book.setId(bookId);
-    return BOOKS_REPOSITORY_MAP.put(bookId, book);
+    BOOKS_REPOSITORY_MAP.put(bookId, book);
   }
 
   @Override
