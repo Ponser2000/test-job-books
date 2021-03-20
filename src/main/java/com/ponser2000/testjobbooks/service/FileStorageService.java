@@ -34,7 +34,7 @@ public class FileStorageService {
     }
   }
 
-  public String storeFile(MultipartFile file) {
+  public String storeFile(MultipartFile file) throws FileStorageException {
     String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
     try {

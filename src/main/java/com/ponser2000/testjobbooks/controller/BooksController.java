@@ -1,5 +1,6 @@
 package com.ponser2000.testjobbooks.controller;
 
+import com.ponser2000.testjobbooks.exception.FileStorageException;
 import com.ponser2000.testjobbooks.model.Book;
 import com.ponser2000.testjobbooks.model.BookTo;
 import com.ponser2000.testjobbooks.model.ResultOperation;
@@ -38,16 +39,17 @@ public class BooksController {
 
     ResultOperation result = new ResultOperation();
     String fileDownloadUri;
-    String fileName = fileStorageService.storeFile(cover);
-    if (!fileName.equals("")) {
+    String fileName = "";
+    try {
+      fileName = fileStorageService.storeFile(cover);
       fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
           .path("/books/covers/").path(fileName).toUriString();
-    } else {
+    } catch (FileStorageException ex) {
       result.setSuccess(false);
       return ResponseEntity.ok().body(result);
     }
 
-    if (title != null && description != null) {
+    if (!title.equals("") && !description.equals("")) {
       bookService.create(new Book(title, description, fileDownloadUri));
       result.setSuccess(true);
     } else {
